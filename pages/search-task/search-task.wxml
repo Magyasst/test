@@ -1,0 +1,85 @@
+<!-- pages/search-task/search-task.wxml -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-box">
+    <image src="/images/icon-search.png" class="search-icon"></image>
+    <input
+      class="search-input"
+      placeholder="搜索任务"
+      placeholder-class="placeholder"
+      value="{{searchParams.title}}"
+      bindinput="handleInput"
+    />
+    <picker 
+      class="category-picker"
+      value="{{categoryIndex}}" 
+      range="{{categories}}"
+      bindchange="handleCategoryChange"
+    >
+      <view class="filter-btn">
+        {{categories[categoryIndex] || '选择分类'}}
+        <image src="/images/arrow-down.png" class="filter-icon" />
+      </view>
+    </picker>
+  </view>
+
+  <!-- 搜索结果 -->
+  <scroll-view 
+    scroll-y 
+    class="task-list"
+    style="height: calc(100vh - 200rpx)"
+  >
+    <block wx:for="{{searchResult}}" wx:key="id">
+      <view 
+        class="task-card {{item.status === '完成' ? 'done' : ''}}"
+        data-id="{{item.id}}"
+        bindtap="navigateToDetail"
+      >
+        <view class="status-ribbon {{item.status === '完成' ? 'done' : (item.dueDate < today && item.status !== '完成' ? 'overdue' : '')}}">
+          {{item.dueDate < today && item.status !== '完成' ? '已逾期' : item.status}}
+        </view>
+        
+        <view class="task-main">
+          <text class="task-title">{{item.title}}</text>
+          <text class="task-desc">{{item.description || '暂无描述'}}</text>
+          
+          <view class="task-meta">
+            <view class="meta-item">
+              <image src="/images/icon-category.png" class="meta-icon"></image>
+              <text class="meta-text">{{item.category}}</text>
+            </view>
+            <view class="meta-item">
+              <image src="/images/icon-date.png" class="meta-icon"></image>
+              <text class="meta-text">{{item.dueDate}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view 
+          class="quick-action"
+          data-id="{{item.id}}"
+          data-status="{{item.status}}"
+          catchtap="quickToggleStatus"
+        >
+          <image 
+            src="{{item.status === '完成' ? '/images/icon-check.gif' : '/images/icon-undo.gif'}}" 
+            class="action-icon"
+          ></image>
+        </view>
+      </view>
+    </block>
+
+    <view wx:if="{{!loading && searchResult.length === 0}}" class="empty-state">
+      <image src="/images/empty-task.png" class="empty-image"></image>
+      <text class="empty-text">点击分类或者搜索吧</text>
+    </view>
+  </scroll-view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-mask">
+    <view class="loading-content">
+      <image src="/images/loading.gif" class="loading-icon"></image>
+      <text class="loading-text">搜索中...</text>
+    </view>
+  </view>
+</view>

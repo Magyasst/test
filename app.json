@@ -1,0 +1,54 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/add-task/add-task",
+    "pages/edit-task/edit-task",
+    "pages/stats/stats",
+    "pages/profile/profile",
+    "pages/search-task/search-task"
+  ],
+  "window": {
+    "backgroundColor": "#F8FAFC",
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "任务管理",
+    "navigationBarTextStyle": "black",
+    "navigationStyle": "default",
+    "enablePullDownRefresh": true
+  },
+  "tabBar": {
+    "color": "#94A3B8",
+    "selectedColor": "#3B82F6",
+    "borderStyle": "white",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "任务",
+        "iconPath": "/images/index.png",
+        "selectedIconPath": "/images/index.png"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计",
+        "iconPath": "/images/统计.png",
+        "selectedIconPath": "/images/统计.png"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的",
+        "iconPath": "/images/用户.png",
+        "selectedIconPath": "/images/用户.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于任务位置提醒功能"
+    }
+  },
+  "requiredBackgroundModes": ["location"],
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

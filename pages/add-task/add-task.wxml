@@ -1,0 +1,91 @@
+<!-- pages/add-task/add-task.wxml -->
+<view class="container">
+  <view class="header">
+    <text class="title">新建任务</text>
+  </view>
+
+  <view class="form-container">
+    <view wx:if="{{errorMessage}}" class="error-tip">
+      <image src="/images/loading.gif" class="error-icon"></image>
+      {{errorMessage}}
+    </view>
+
+    <!-- 任务标题 -->
+    <view class="form-item">
+      <text class="label">任务标题</text>
+      <input 
+        class="input" 
+        placeholder="请输入任务标题（必填）"
+        value="{{form.title}}"
+        data-field="title"
+        bindinput="handleInput"
+        maxlength="8"
+      />
+      <text class="counter">{{form.title.length}}/8</text>
+    </view>
+
+    <!-- 任务描述 -->
+    <view class="form-item">
+      <text class="label">任务描述</text>
+      <textarea 
+        class="textarea"
+        placeholder="请输入任务描述（可选）"
+        value="{{form.description}}"
+        data-field="description"
+        bindinput="handleInput"
+        maxlength="20"
+        auto-height
+      />
+      <text class="counter">{{form.description.length}}/20</text>
+    </view>
+
+    <!-- 任务分类 -->
+    <view class="form-item">
+      <text class="label">任务分类</text>
+      <view class="category-group">
+        <block wx:for="{{categories}}" wx:key="id">
+          <view 
+            class="category-item {{form.category === item.name ? 'active' : ''}}"
+            data-name="{{item.name}}"
+            bindtap="selectCategory"
+          >
+            {{item.name}}
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 截止日期 -->
+    <view class="form-item">
+      <text class="label">截止日期</text>
+      <picker 
+        mode="date" 
+        value="{{form.dueDate}}"
+        start="{{minDate}}"
+        end="{{maxDate}}"
+        bindchange="handleDateChange"
+      >
+        <view class="picker-box {{form.dueDate ? 'selected' : ''}}">
+          {{form.dueDate || '请选择截止日期'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 提醒时间 -->
+    <view class="form-item">
+      <text class="label">提醒时间</text>
+      <picker 
+        mode="time" 
+        value="{{form.remindTime}}"
+        bindchange="handleTimeChange"
+      >
+        <view class="picker-box {{form.remindTime ? 'selected' : ''}}">
+          {{form.remindTime || '请选择提醒时间'}}
+        </view>
+      </picker>
+    </view>
+
+    <!-- 提交按钮 -->
+    <button class="submit-btn" bindtap="submitForm">立即创建</button>
+  </view>
+</view>

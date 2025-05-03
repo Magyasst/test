@@ -1,0 +1,67 @@
+<!-- pages/stats/stats.wxml -->
+<view class="container">
+  <!-- 头部区域 -->
+  <view class="header">
+    <text class="title">任务统计中心</text>
+    <picker 
+      value="{{timeRangeIndex}}" 
+      range="{{timeRanges}}" 
+      range-key="name"
+      bindchange="changeTimeRange"
+    >
+      <view class="time-filter">
+        <text>{{timeRanges[timeRangeIndex].name}}</text>
+        <image src="/images/arrow-down.png" class="filter-icon" />
+      </view>
+    </picker>
+  </view>
+
+  <!-- 数据概览 -->
+  <view class="overview-grid">
+    <view class="overview-card blue-gradient">
+      <image src="/images/icon-task.png" class="card-icon" />
+      <view class="card-content">
+        <text class="value">{{statsData.total || 0}}</text>
+        <text class="label">总任务数</text>
+      </view>
+    </view>
+    
+    <view class="overview-card green-gradient">
+      <image src="/images/icon-complete.png" class="card-icon" />
+      <view class="card-content">
+        <text class="value">{{statsData.completionRate || 0}}%</text>
+        <text class="label">完成率</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 完成状态图表 -->
+  <view class="chart-card">
+    <view class="card-header">
+      <view class="header-decoration"></view>
+      <text class="card-title">任务完成状态</text>
+      <text class="update-time">更新于{{updateTime}}</text>
+    </view>
+    <view class="chart-container">
+      <ec-canvas id="completion-chart" canvas-id="completionChart" ec="{{ec1}}"></ec-canvas>
+    </view>
+  </view>
+
+  <!-- 分类分布图表 -->
+  <view class="chart-card">
+    <view class="card-header">
+      <view class="header-decoration"></view>
+      <text class="card-title">任务分类分布</text>
+      <text class="update-time">更新于{{updateTime}}</text>
+    </view>
+    <view class="chart-container">
+      <ec-canvas id="category-chart" canvas-id="categoryChart" ec="{{ec2}}"></ec-canvas>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-overlay">
+    <image src="/images/loading-wave.gif" class="loading-gif" />
+    <text class="loading-text">数据加载中...</text>
+  </view>
+</view>

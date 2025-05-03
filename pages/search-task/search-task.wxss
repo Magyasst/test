@@ -1,0 +1,21 @@
+/* pages/search-task/search-task.wxss */
+@import "/pages/index/index.wxss";  /* 继承主页样式 */
+
+.search-box {
+  margin: 32rpx;
+}
+
+.category-picker {
+  margin-left: 24rpx;
+  padding: 12rpx 24rpx;
+  background: #f0f4ff;
+  border-radius: 8rpx;
+  font-size: 26rpx;
+  color: #3b82f6;
+}
+
+.filter-icon {
+  width: 24rpx;
+  height: 24rpx;
+  margin-left: 8rpx;
+}

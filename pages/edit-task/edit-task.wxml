@@ -1,0 +1,135 @@
+<!-- pages/edit-task/edit-task.wxml -->
+<view class="container">
+  <!-- 头部导航 -->
+  <view class="header">
+    <view class="action-btn" bindtap="navigateBack">
+      <image src="/images/icon-back.png" class="icon" />
+      <text>返回</text>
+    </view>
+    <text class="title">编辑任务</text>
+    <view class="action-btn danger" bindtap="handleDelete">
+      <image src="/images/icon-delete.png" class="icon" />
+      <text>删除</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="content">
+    <!-- 错误提示 -->
+    <view class="error-message" wx:if="{{errorMessage}}">
+      {{errorMessage}}
+    </view>
+
+    <!-- 状态卡片 -->
+    <view class="status-card {{form.status === '完成' ? 'done' : ''}}">
+      <view class="status-header">
+        <text class="status-text">当前状态：</text>
+        <text class="status-badge">{{form.status}}</text>
+      </view>
+      <button 
+        class="toggle-btn"
+        bindtap="toggleStatus"
+        hover-class="toggle-btn-hover"
+      >
+        {{form.status === '完成' ? '标记为未完成' : '标记为已完成'}}
+      </button>
+    </view>
+
+    <!-- 表单内容 -->
+    <view class="form-card">
+      <!-- 标题 -->
+      <view class="form-item">
+        <text class="label">任务标题</text>
+        <input
+          class="input {{form.title ? 'has-value' : ''}}"
+          placeholder="输入任务标题"
+          value="{{form.title}}"
+          maxlength="8"
+          bindinput="handleInput"
+          data-field="title"
+        />
+        <text class="counter">{{form.title.length}}/8</text>
+      </view>
+
+      <!-- 描述 -->
+      <view class="form-item">
+        <text class="label">任务描述</text>
+        <textarea
+          class="textarea {{form.description ? 'has-value' : ''}}"
+          placeholder="添加任务详情"
+          value="{{form.description}}"
+          maxlength="20"
+          bindinput="handleInput"
+          data-field="description"
+          auto-height
+        />
+        <text class="counter">{{form.description.length}}/20</text>
+      </view>
+
+      <!-- 分类 -->
+      <view class="form-item">
+        <text class="label">任务分类</text>
+        <view class="category-grid">
+          <block wx:for="{{categories}}" wx:key="name">
+            <view 
+              class="category-item {{form.category === item.name ? 'active' : ''}}"
+              style="background:{{item.color}}"
+              bindtap="selectCategory"
+              data-name="{{item.name}}"
+            >
+              <text class="icon">{{item.icon}}</text>
+              <text class="name">{{item.name}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+
+      <!-- 时间设置 -->
+      <view class="form-item">
+        <text class="label">时间设置</text>
+        <view class="time-group">
+          <picker mode="date" value="{{form.dueDate}}" bindchange="handleDateChange">
+            <view class="time-item {{form.dueDate ? 'selected' : ''}}">
+              <image src="/images/icon-date.png" class="icon" />
+              <text class="text">{{form.dueDate || '选择截止日期'}}</text>
+            </view>
+          </picker>
+          <picker mode="time" value="{{form.remindTime}}" bindchange="handleTimeChange">
+            <view class="time-item {{form.remindTime ? 'selected' : ''}}">
+              <image src="/images/icon-time.png" class="icon" />
+              <text class="text">{{form.remindTime || '设置提醒时间'}}</text>
+            </view>
+          </picker>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 底部按钮 -->
+  <view class="footer">
+    <button 
+      class="submit-btn {{isDataChanged ? 'active' : 'disabled'}}"
+      bindtap="submitForm"
+      disabled="{{!isDataChanged}}"
+    >
+      保存修改
+    </button>
+  </view>
+
+  <!-- 删除确认弹窗 -->
+  <view wx:if="{{showDeleteConfirm}}" class="modal-mask">
+    <view class="modal-container">
+      <text class="modal-title">确认删除</text>
+      <text class="modal-content">删除后无法恢复，确定继续吗？</text>
+      <view class="modal-actions">
+        <button class="modal-btn cancel" bindtap="setData({showDeleteConfirm: false})">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmDelete">确认删除</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- 加载状态 -->
+  <view wx:if="{{loading}}" class="loading-overlay">
+    <image src="/images/loading.gif" class="loading-icon" />
+    <text class="loading-text">加载任务详情中...</text>
+  </view>
+</view>

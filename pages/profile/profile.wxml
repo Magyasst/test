@@ -1,0 +1,72 @@
+<!-- pages/profile/profile.wxml -->
+<view class="profile-container">
+  <!-- 用户信息卡片 -->
+  <view class="user-card">
+    <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+      <image style="position: relative; left: -74rpx; top: -4rpx" class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+    </button>
+    <view class="user-info">
+      <input style="position: relative; left: -122rpx; top: -8rpx; width: 225rpx; height: 78rpx; display: block; box-sizing: border-box" 
+        class="nickname-input" 
+        type="nickname"
+        value="{{userInfo.nickName}}"
+        placeholder="点击输入昵称"
+        bindinput="onNicknameInput"
+      />
+      <text class="user-id" style="position: relative; left: -102rpx; top: 0rpx">用户ID: {{userInfo.userId}}</text>
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="card menu-list">
+    <view class="menu-item hover-scale" bindtap="navigateTo" data-page="search-task">
+      <image class="menu-icon" src="/images/icon-search.png" />
+      <text style="position: relative; left: -214rpx; top: 5rpx">高级搜索</text>
+      <image class="arrow" src="/images/arrow-right.png" />
+    </view>
+
+    <view class="menu-item">
+      <image class="menu-icon" src="/images/icon-notify.png" />
+      <text style="position: relative; left: -175rpx; top: -1rpx">消息通知</text>
+      <switch checked="{{notifyEnabled}}" color="#3B82F6" bindchange="toggleNotification" />
+    </view>
+
+    <view class="menu-item hover-scale" bindtap="navigateTo" data-page="stats">
+      <image class="menu-icon" src="/images/icon-chart.png" />
+      <text style="position: relative; left: -214rpx; top: -5rpx">数据洞察</text>
+      <image class="arrow" src="/images/arrow-right.png" />
+    </view>
+  </view>
+
+  <!-- 系统信息卡片 -->
+  <view class="card sys-info">
+    <view class="info-header">
+      <image class="info-icon" src="/images/icon-info.png" />
+      <text>系统信息</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">设备型号</text>
+      <text class="info-value">{{systemInfo.model}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">系统版本</text>
+      <text class="info-value">{{systemInfo.system}}</text>
+    </view>
+    <view class="info-item">
+      <text class="info-label">应用版本</text>
+      <text class="info-value">v{{systemInfo.version}}</text>
+    </view>
+  </view>
+
+  <!-- 操作按钮组 -->
+  <view class="action-buttons">
+    <view class="button secondary" bindtap="clearStorage">
+      <image src="/images/icon-clear.png" class="button-icon" />
+      清除缓存
+    </view>
+    <view class="button danger" bindtap="logout">
+      <image src="/images/icon-logout.png" class="button-icon" />
+      退出登录
+    </view>
+  </view>
+</view>
