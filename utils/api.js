@@ -1,19 +1,26 @@
-// utils/api.js 优化版
+// utils/api.js 
 const app = getApp();
 
 const request = (method, endpoint, data = {}, showLoading = true) => {
   return new Promise((resolve, reject) => {
     if (showLoading) {
-      wx.showLoading({ title: '加载中', mask: true });
+      wx.showLoading({
+        title: '加载中',
+        mask: true
+      });
     }
 
     const fullUrl = `${app.globalData.baseUrl}${endpoint}`;
-    console.log('API Request:', { method, url: fullUrl, data });
+    console.log('API Request:', {
+      method,
+      url: fullUrl,
+      data
+    });
 
     wx.request({
       url: fullUrl,
       method: method.toUpperCase(),
-      header: { 
+      header: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${app.globalData.token}`
       },
@@ -24,7 +31,9 @@ const request = (method, endpoint, data = {}, showLoading = true) => {
           resolve(res.data);
         } else {
           handleError(res);
-          reject(res.data || { message: '请求失败' });
+          reject(res.data || {
+            message: '请求失败'
+          });
         }
       },
       fail: (err) => {
@@ -52,7 +61,9 @@ function handleError(error) {
         message = '登录已过期';
         app.globalData.userId = '';
         app.globalData.token = '';
-        wx.redirectTo({ url: '/pages/login/login' });
+        wx.redirectTo({
+          url: '/pages/login/login'
+        });
         break;
       case 403:
         message = '没有操作权限';
@@ -65,7 +76,7 @@ function handleError(error) {
         break;
     }
   }
-  
+
   wx.showToast({
     title: message,
     icon: 'none',
@@ -80,14 +91,26 @@ const api = {
     createV2: (data) => request('POST', '/person/v2', data),
     update: (id, data) => request('PUT', `/person/${id}`, data),
     delete: (id) => request('DELETE', `/person/${id}`),
-    detail: (id) => request('GET', `/person/${id}/safe`, { userId: app.globalData.userId }),
+    detail: (id) => request('GET', `/person/${id}/safe`, {
+      userId: app.globalData.userId
+    }),
     search: (params) => request('GET', '/person/search', params),
-    updateStatus: (id, status) => request('PUT', `/person/status/${id}`, { status })
+    updateStatus: (id, status) => request('PUT', `/person/status/${id}`, {
+      status
+    }),
+    
+    
+    updateV2: (id, data) => request('PUT', `/person/v2/${id}`, data),
   },
   stats: {
     get: (params) => request('GET', '/person/stats', params),
-    
-  }
+  },
+  user: {
+    login: (data) => request('POST', '/user/login', data),
+    register: (data) => request('POST', '/user/register', data),
+    updatePassword: (data) => request('POST', '/user/updatePassword', data)
+
+  },
 };
 
 module.exports = api;

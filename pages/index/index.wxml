@@ -3,20 +3,13 @@
   <!-- 头部导航 -->
   <view class="header">
     <view class="user-info">
-      <text class="welcome">你好，用户{{app.globalData.userId}}</text>
-      <view class="logout" bindtap="handleLogout">退出</view>
+      <text class="welcome animate__animated animate__fadeIn">{{greeting}}，{{displayName}}</text>
     </view>
-    
+
     <!-- 搜索框 -->
     <view class="search-box">
-      <image src="/images/icon-search.png" class="search-icon"></image>
-      <input
-        class="search-input"
-        placeholder="搜索任务"
-        placeholder-class="placeholder"
-        value="{{searchKeyword}}"
-        bindinput="handleSearch"
-      />
+      <image src="/images/搜索.png" class="search-icon"></image>
+      <input class="search-input" placeholder="搜索任务" placeholder-class="placeholder" value="{{searchKeyword}}" bindinput="handleSearch" />
     </view>
   </view>
 
@@ -38,68 +31,48 @@
 
   <!-- 任务导航 -->
   <view class="tab-bar">
-    <view 
-      class="tab-item {{currentTab === 'all' ? 'active' : ''}}" 
-      data-tab="all" 
-      bindtap="switchTab"
-    >全部</view>
-    <view 
-      class="tab-item {{currentTab === 'todo' ? 'active' : ''}}" 
-      data-tab="todo" 
-      bindtap="switchTab"
-    >进行中</view>
-    <view 
-      class="tab-item {{currentTab === 'done' ? 'active' : ''}}" 
-      data-tab="done" 
-      bindtap="switchTab"
-    >已完成</view>
+    <view class="tab-item {{currentTab === 'all' ? 'active' : ''}}" data-tab="all" bindtap="switchTab">全部</view>
+    <view class="tab-item {{currentTab === 'todo' ? 'active' : ''}}" data-tab="todo" bindtap="switchTab">进行中</view>
+    <view class="tab-item {{currentTab === 'done' ? 'active' : ''}}" data-tab="done" bindtap="switchTab">已完成</view>
+    <view class="tab-item {{currentTab === 'overdue' ? 'active' : ''}}" data-tab="overdue" bindtap="switchTab">已逾期</view>
   </view>
 
   <!-- 任务列表 -->
-  <scroll-view 
-    scroll-y 
-    class="task-list"
-    refresher-enabled
-    refresher-triggered="{{refreshStatus}}"
-    bindrefresherrefresh="onPullDownRefresh"
-  >
+  <scroll-view scroll-y class="task-list" refresher-enabled refresher-triggered="{{refreshStatus}}" bindrefresherrefresh="onPullDownRefresh">
     <block wx:for="{{filteredTasks}}" wx:key="id" wx:for-index="index">
       <view 
-        class="task-card {{item.status === '完成' ? 'done' : ''}}"
-        data-id="{{item.id}}"
-        bindtap="navigateToDetail"
+        class="task-card {{item.status === '完成' ? 'done' : ''}} {{activeIndex === index ? 'active' : ''}}"
+        data-id="{{item.id}}" 
+        data-index="{{index}}"
+        bindtouchstart="handleTouchStart"
+        bindtouchend="handleTouchEnd"
+        bindtouchcancel="handleTouchEnd"
+        bindlongpress="handleLongPress"
+        catchtap="navigateToDetail"
         style="opacity: {{shouldAnimate ? 0 : 1}};"
       >
-        <view class="status-ribbon {{item.status === '完成' ? 'done' : (item.dueDate < today && item.status !== '完成' ? 'overdue' : '')}}">
-          {{item.dueDate < today && item.status !== '完成' ? '已逾期' : item.status}}
+        <view class="status-ribbon {{item.status === '完成' ? 'done' : (item.isOverdue ? 'overdue' : '')}}">
+          {{item.isOverdue ? '已逾期' : item.status}}
         </view>
-        
+
         <view class="task-main">
           <text class="task-title">{{item.title}}</text>
           <text class="task-desc">{{item.description || '暂无描述'}}</text>
-          
+
           <view class="task-meta">
             <view class="meta-item">
-              <image src="/images/icon-category.png" class="meta-icon"></image>
+              <image src="/images/标签.png" class="meta-icon"></image>
               <text class="meta-text">{{item.category}}</text>
             </view>
             <view class="meta-item">
-              <image src="/images/icon-date.png" class="meta-icon"></image>
+              <image src="/images/日期.png" class="meta-icon"></image>
               <text class="meta-text">{{item.dueDate}}</text>
             </view>
           </view>
         </view>
 
-        <view 
-          class="quick-action"
-          data-id="{{item.id}}"
-          data-status="{{item.status}}"
-          catchtap="quickToggleStatus"
-        >
-          <image 
-            src="{{item.status === '完成' ? '/images/icon-check.gif' : '/images/icon-undo.gif'}}" 
-            class="action-icon"
-          ></image>
+        <view class="quick-action" data-id="{{item.id}}" data-status="{{item.status}}" catchtap="quickToggleStatus">
+          <image src="{{item.status === '完成' ? '/images/撤回.png' : '/images/完成.png'}}" class="action-icon"></image>
         </view>
       </view>
     </block>
@@ -113,7 +86,7 @@
   <!-- 悬浮操作 -->
   <view class="fab-container">
     <view class="fab-btn add" bindtap="navigateToAdd">
-      <image src="/images/icon-add-white.gif" class="fab-icon"></image>
+      <image src="/images/新建.png" class="fab-icon"></image>
       <text class="fab-text">新建任务</text>
     </view>
   </view>

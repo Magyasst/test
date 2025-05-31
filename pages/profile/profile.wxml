@@ -3,45 +3,46 @@
   <!-- 用户信息卡片 -->
   <view class="user-card">
     <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
-      <image style="position: relative; left: -74rpx; top: -4rpx" class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
+      <image class="avatar" src="{{userInfo.avatarUrl}}" mode="aspectFill" />
     </button>
     <view class="user-info">
-      <input style="position: relative; left: -122rpx; top: -8rpx; width: 225rpx; height: 78rpx; display: block; box-sizing: border-box" 
+      <input 
         class="nickname-input" 
         type="nickname"
         value="{{userInfo.nickName}}"
         placeholder="点击输入昵称"
         bindinput="onNicknameInput"
       />
-      <text class="user-id" style="position: relative; left: -102rpx; top: 0rpx">用户ID: {{userInfo.userId}}</text>
+      <text class="user-id">用户ID: {{userInfo.userId}}</text>
     </view>
   </view>
 
   <!-- 功能列表 -->
   <view class="card menu-list">
     <view class="menu-item hover-scale" bindtap="navigateTo" data-page="search-task">
-      <image class="menu-icon" src="/images/icon-search.png" />
-      <text style="position: relative; left: -214rpx; top: 5rpx">高级搜索</text>
-      <image class="arrow" src="/images/arrow-right.png" />
+      <text class="menu-text">高级搜索</text>
+      <text class="arrow">›</text>
     </view>
 
+    <view class="menu-divider"></view>
+
     <view class="menu-item">
-      <image class="menu-icon" src="/images/icon-notify.png" />
-      <text style="position: relative; left: -175rpx; top: -1rpx">消息通知</text>
+      <text class="menu-text">消息通知</text>
       <switch checked="{{notifyEnabled}}" color="#3B82F6" bindchange="toggleNotification" />
     </view>
 
-    <view class="menu-item hover-scale" bindtap="navigateTo" data-page="stats">
-      <image class="menu-icon" src="/images/icon-chart.png" />
-      <text style="position: relative; left: -214rpx; top: -5rpx">数据洞察</text>
-      <image class="arrow" src="/images/arrow-right.png" />
-    </view>
+    <view class="menu-divider"></view>
+
+    <!-- 修改profile.wxml中的菜单项 -->
+<view class="menu-item hover-scale" bindtap="showPasswordModal">
+  <text class="menu-text">修改密码</text>
+  <text class="arrow">›</text>
+</view>
   </view>
 
   <!-- 系统信息卡片 -->
   <view class="card sys-info">
     <view class="info-header">
-      <image class="info-icon" src="/images/icon-info.png" />
       <text>系统信息</text>
     </view>
     <view class="info-item">
@@ -61,12 +62,60 @@
   <!-- 操作按钮组 -->
   <view class="action-buttons">
     <view class="button secondary" bindtap="clearStorage">
-      <image src="/images/icon-clear.png" class="button-icon" />
       清除缓存
     </view>
     <view class="button danger" bindtap="logout">
-      <image src="/images/icon-logout.png" class="button-icon" />
       退出登录
     </view>
+  </view>
+</view>
+
+<!-- 修改密码弹窗 -->
+<view class="password-modal" wx:if="{{showPasswordModal}}">
+  <view class="modal-mask"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text>修改密码(6-18位字母数字)</text>
+      <text class="close-btn" bindtap="closePasswordModal">×</text>
+    </view>
+
+    <view class="input-group">
+      <text class="input-label">旧密码：</text>
+      <input 
+        type="password"
+        password
+        
+        value="{{oldPassword}}"
+        bindinput="onOldPasswordInput"
+      />
+    </view>
+
+    <view class="input-group">
+      <text class="input-label">新密码：</text>
+      <input 
+        type="password"
+        password
+        
+        value="{{newPassword}}"
+        bindinput="onNewPasswordInput"
+      />
+    </view>
+
+    <view class="input-group">
+      <text class="input-label">确认密码：</text>
+      <input 
+        type="password"
+        password
+        
+        value="{{confirmPassword}}"
+        bindinput="onConfirmPasswordInput"
+      />
+    </view>
+
+    <button 
+      class="submit-btn" 
+      bindtap="submitPasswordChange"
+      loading="{{isSubmitting}}"
+    >确认修改</button>
   </view>
 </view>

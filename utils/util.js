@@ -49,7 +49,7 @@ function getRelativeTime(date) {
 // utils/util.js 新增分类验证器
 const validator = {
   title: (value) => {
-    if (!value) return '标题不能为空';
+    if (!value) return '标题不能为空。';
     if (value.length > 8) return '标题不能超过8个字';
     return null;
   },

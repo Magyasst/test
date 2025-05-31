@@ -1,71 +1,98 @@
 /* pages/profile/profile.wxss */
+/* 容器样式 */
 .profile-container {
   padding: 32rpx;
   background: linear-gradient(150deg, #f8fafc 0%, #f0f4ff 100%);
   min-height: 100vh;
 }
 
-/* 用户卡片 */
+/* 用户卡片样式 */
 .user-card {
+  display: flex;
+  align-items: center;
+  padding: 32rpx;
   background: linear-gradient(135deg, #ffffff, #f8faff);
   border-radius: 24rpx;
-  padding: 40rpx;
   margin-bottom: 32rpx;
   box-shadow: 0 8rpx 24rpx rgba(99, 102, 241, 0.08);
   border: 1rpx solid #e0e7ff;
-  display: flex;
-  align-items: center;
 }
 
+/* 头像按钮 */
 .avatar-btn {
+  width: 140rpx !important;
+  height: 140rpx !important;
+  min-width: 140rpx;
   padding: 0;
   margin: 0;
-  width: 140rpx;
-  height: 140rpx;
   border-radius: 50%;
   background: none;
-  position: relative;
+  overflow: visible;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
 .avatar-btn::after {
   border: none;
 }
 
+.avatar-btn:active {
+  transform: scale(0.98);
+}
+
+/* 头像图片 */
 .avatar {
-  width: 140rpx;
-  height: 140rpx;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   border: 4rpx solid #f1f5f9;
   background-color: #fff;
+  display: block;
+  box-shadow: 0 4rpx 12rpx rgba(30, 41, 59, 0.08);
 }
 
+/* 用户信息区域 */
 .user-info {
   flex: 1;
   margin-left: 32rpx;
+  height: 140rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
+/* 昵称输入框 */
 .nickname-input {
   font-size: 36rpx;
   color: #1e293b;
   font-weight: 600;
-  padding: 12rpx 0;
   width: 100%;
-  border-bottom: 2rpx solid #e2e8f0;
+  padding: 0;
   line-height: 1.4;
+  border: none;
+  background: transparent;
+  transition: all 0.2s ease;
 }
 
 .nickname-input::placeholder {
   color: #94a3b8;
+  opacity: 0.8;
 }
 
+.nickname-input:focus {
+  outline: none;
+  box-shadow: 0 2rpx 0 #3B82F6;
+}
+
+/* 用户ID */
 .user-id {
   font-size: 24rpx;
   color: #64748b;
-  margin-top: 16rpx;
-  display: block;
+  margin-top: 12rpx;
+  letter-spacing: 0.5rpx;
 }
 
-/* 功能卡片 */
+/* 功能列表样式 */
 .card {
   background: linear-gradient(145deg, #ffffff, #fbfdff);
   border-radius: 24rpx;
@@ -74,77 +101,46 @@
   border: 1rpx solid #e0e7ff;
 }
 
-/* 菜单项 */
 .menu-item {
   height: 112rpx;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 32rpx;
-  position: relative;
-}
-
-.menu-left {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
 }
 
 .menu-text {
   font-size: 30rpx;
   color: #1e293b;
-  margin-left: 24rpx;
   font-weight: 500;
+  flex-grow: 1;
 }
 
-.menu-icon {
-  width: 44rpx;
-  height: 44rpx;
-  filter: hue-rotate(20deg);
-}
-
-/* 分隔线 */
 .menu-divider {
   height: 1rpx;
   background: linear-gradient(90deg, transparent 10%, #e0e7ff 50%, transparent 90%);
   margin: 0 32rpx;
 }
 
-/* 开关控件 */
-.notify-switch {
-  transform: scale(0.95);
-  filter: drop-shadow(0 2rpx 4rpx rgba(59, 130, 246, 0.2));
-}
-
-/* 箭头 */
 .arrow {
-  width: 32rpx;
-  height: 32rpx;
-  opacity: 0.8;
-  filter: invert(48%) sepia(92%) saturate(1512%) hue-rotate(202deg);
+  font-size: 48rpx;
+  color: #94a3b8;
+  margin-left: 16rpx;
 }
 
-/* 系统信息 */
+/* 系统信息样式 */
 .sys-info {
-  background: linear-gradient(145deg, #ffffff, #f8faff);
   padding: 0 32rpx;
 }
 
 .info-header {
-  display: flex;
-  align-items: center;
   height: 96rpx;
   border-bottom: 1rpx solid #f1f5f9;
   font-size: 32rpx;
   color: #1e293b;
   font-weight: 600;
-}
-
-.info-icon {
-  width: 36rpx;
-  height: 36rpx;
-  margin-right: 12rpx;
+  display: flex;
+  align-items: center;
 }
 
 .info-item {
@@ -170,7 +166,7 @@
   font-size: 28rpx;
 }
 
-/* 操作按钮 */
+/* 操作按钮样式 */
 .action-buttons {
   margin-top: 48rpx;
 }
@@ -187,12 +183,6 @@
   font-size: 32rpx;
   background: rgba(255, 255, 255, 0.9);
   border: 1rpx solid;
-}
-
-.button-icon {
-  width: 40rpx;
-  height: 40rpx;
-  margin-right: 12rpx;
 }
 
 .secondary {
@@ -220,3 +210,102 @@
   transform: scale(0.98);
   opacity: 0.9;
 }
+
+/* 响应式调整 */
+@media (max-width: 360px) {
+  .user-card {
+    padding: 24rpx;
+  }
+  .user-info {
+    margin-left: 24rpx;
+  }
+  .nickname-input {
+    font-size: 32rpx;
+  }
+  .menu-text {
+    font-size: 28rpx;
+  }
+  .button {
+    height: 88rpx;
+    font-size: 30rpx;
+  }
+}
+
+.password-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+
+.modal-mask {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  position: relative;
+  width: 80%;
+  margin: 200rpx auto;
+  background: #fff;
+  border-radius: 16rpx;
+  padding: 40rpx;
+  box-sizing: border-box;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40rpx;
+  font-size: 34rpx;
+  color: #1e293b;
+}
+
+.close-btn {
+  font-size: 50rpx;
+  color: #94a3b8;
+  padding: 0 20rpx;
+}
+
+.input-group {
+  margin: 40rpx 0;
+}
+
+.input-label {
+  display: block;
+  font-size: 28rpx;
+  color: #64748b;
+  margin-bottom: 16rpx;
+}
+
+.input-group input {
+  width: 90%;
+  height: 88rpx;
+  padding: 0 24rpx;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  color: #1e293b;
+}
+
+.input-group input[type="password"] {
+  font-family: text-security-disc;
+  -webkit-text-security: disc;
+}
+
+.submit-btn {
+  margin-top: 40rpx;
+  background: #3b82f6;
+  color: white;
+  height: 88rpx;
+  border-radius: 44rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

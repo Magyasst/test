@@ -86,6 +86,6 @@
     </view>
 
     <!-- 提交按钮 -->
-    <button class="submit-btn" bindtap="submitForm">立即创建</button>
+    <button class="submit-btn" bindtap="submitForm" style="height: 83rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">立即创建</button>
   </view>
 </view>

@@ -317,3 +317,14 @@
 .form-item:focus-within::after {
   opacity: 0.2;
 }
+
+
+.required {
+  color: #ef4444;
+  margin-left: 8rpx;
+}
+
+.picker-box.error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}

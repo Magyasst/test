@@ -2,7 +2,7 @@
 <view class="container">
   <!-- 搜索栏 -->
   <view class="search-box">
-    <image src="/images/icon-search.png" class="search-icon"></image>
+    <image src="/images/搜索.png" class="search-icon"></image>
     <input
       class="search-input"
       placeholder="搜索任务"
@@ -18,7 +18,7 @@
     >
       <view class="filter-btn">
         {{categories[categoryIndex] || '选择分类'}}
-        <image src="/images/arrow-down.png" class="filter-icon" />
+        
       </view>
     </picker>
   </view>
@@ -45,11 +45,11 @@
           
           <view class="task-meta">
             <view class="meta-item">
-              <image src="/images/icon-category.png" class="meta-icon"></image>
+              <image src="/images/标签.png" class="meta-icon"></image>
               <text class="meta-text">{{item.category}}</text>
             </view>
             <view class="meta-item">
-              <image src="/images/icon-date.png" class="meta-icon"></image>
+              <image src="/images/日期.png" class="meta-icon"></image>
               <text class="meta-text">{{item.dueDate}}</text>
             </view>
           </view>
@@ -62,7 +62,7 @@
           catchtap="quickToggleStatus"
         >
           <image 
-            src="{{item.status === '完成' ? '/images/icon-check.gif' : '/images/icon-undo.gif'}}" 
+            src="{{item.status === '完成' ? '/images/撤回.png' : '/images/完成.png'}}" 
             class="action-icon"
           ></image>
         </view>
@@ -71,7 +71,7 @@
 
     <view wx:if="{{!loading && searchResult.length === 0}}" class="empty-state">
       <image src="/images/empty-task.png" class="empty-image"></image>
-      <text class="empty-text">点击分类或者搜索吧</text>
+      <text class="empty-text">选择类型刷新数据吧</text>
     </view>
   </scroll-view>
 

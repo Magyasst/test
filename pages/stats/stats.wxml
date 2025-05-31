@@ -11,7 +11,7 @@
     >
       <view class="time-filter">
         <text>{{timeRanges[timeRangeIndex].name}}</text>
-        <image src="/images/arrow-down.png" class="filter-icon" />
+        <image src="/images/日期.png" class="filter-icon" />
       </view>
     </picker>
   </view>
@@ -19,7 +19,7 @@
   <!-- 数据概览 -->
   <view class="overview-grid">
     <view class="overview-card blue-gradient">
-      <image src="/images/icon-task.png" class="card-icon" />
+      <image src="/images/任务清单.png" class="card-icon" />
       <view class="card-content">
         <text class="value">{{statsData.total || 0}}</text>
         <text class="label">总任务数</text>
@@ -27,7 +27,7 @@
     </view>
     
     <view class="overview-card green-gradient">
-      <image src="/images/icon-complete.png" class="card-icon" />
+      <image src="/images/任务已完成5.png" class="card-icon" />
       <view class="card-content">
         <text class="value">{{statsData.completionRate || 0}}%</text>
         <text class="label">完成率</text>
@@ -61,7 +61,7 @@
 
   <!-- 加载状态 -->
   <view wx:if="{{loading}}" class="loading-overlay">
-    <image src="/images/loading-wave.gif" class="loading-gif" />
+    <image src="/images/loading.gif" class="loading-gif" />
     <text class="loading-text">数据加载中...</text>
   </view>
 </view>

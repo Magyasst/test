@@ -12,6 +12,7 @@ const initCompletionChart = (canvas, width, height, dpr) => {
   });
   canvas.setChart(chart);
 
+  
   const option = {
     tooltip: {
       formatter: '{b}: {c} ({d}%)'

@@ -38,8 +38,8 @@
       {
         "pagePath": "pages/profile/profile",
         "text": "我的",
-        "iconPath": "/images/用户.png",
-        "selectedIconPath": "/images/用户.png"
+        "iconPath": "/images/用户1.png",
+        "selectedIconPath": "/images/用户1.png"
       }
     ]
   },
@@ -48,7 +48,9 @@
       "desc": "用于任务位置提醒功能"
     }
   },
-  "requiredBackgroundModes": ["location"],
+  "requiredBackgroundModes": [
+    "location"
+  ],
   "style": "v2",
   "sitemapLocation": "sitemap.json"
 }

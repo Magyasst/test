@@ -17,7 +17,10 @@ Page({
     searchKeyword: '',
     today: formatTime(new Date(), 'YYYY-MM-DD'),
     refreshStatus: false,
-    shouldAnimate: true
+    shouldAnimate: true,
+    greeting: '你好',
+    displayName: '用户',
+    activeIndex: -1 // 新增激活状态索引
   },
 
   onShow() {
@@ -25,6 +28,35 @@ Page({
       wx.redirectTo({ url: '/pages/login/login' });
       return;
     }
+    
+    const userInfo = wx.getStorageSync('userInfo') || {};
+    const now = new Date();
+    const hours = now.getHours();
+    
+    let greeting = '你好';
+    if (hours >= 22 || hours < 5) {
+        greeting = '夜深了';
+    } else if (hours < 9) {
+        greeting = '早上好'; 
+    } else if (hours < 12) {
+        greeting = '上午好';
+    } else if (hours < 14) {
+        greeting = '中午好';
+    } else if (hours < 18) {
+        greeting = '下午好';
+    } else {
+        greeting = '晚上好';
+    }
+
+    const displayName = userInfo.nickName 
+      ? `${userInfo.nickName} 🍀` 
+      : `用户 ${(app.globalData.userId || '').slice(-4)}`;
+
+    this.setData({
+      greeting,
+      displayName
+    });
+
     this.loadData();
   },
 
@@ -50,33 +82,83 @@ Page({
 
   processTaskData() {
     const { allTasks } = this.data;
+    const now = new Date().getTime();
+  
+    // 为每个任务添加时间戳并计算逾期状态
+    const updatedTasks = allTasks.map(task => {
+      const dueDate = task.dueDate || '';
+      const remindTime = task.remindTime || '23:59:59';
+      // 处理没有截止日期的情况（设置为极大值）
+      const dueDateTime = dueDate ? 
+        new Date(`${dueDate}T${remindTime}`).getTime() : 
+        Infinity;
+  
+      return {
+        ...task,
+        dueDateTime,  // 添加时间戳属性
+        isOverdue: dueDate &&  // 只有有截止日期的才计算逾期
+                  !isNaN(dueDateTime) && 
+                  dueDateTime < now && 
+                  task.status !== '完成'
+      };
+    });
+  
+    // 统计计算
     const stats = {
-      total: allTasks.length,
-      completed: allTasks.filter(t => t.status === '完成').length,
-      overdue: allTasks.filter(t => 
-        t.dueDate < this.data.today && t.status !== '完成'
-      ).length
+      total: updatedTasks.length,
+      completed: updatedTasks.filter(t => t.status === '完成').length,
+      overdue: updatedTasks.filter(t => t.isOverdue).length
     };
-
-    this.setData({ stats }, () => {
+  
+    this.setData({ 
+      allTasks: updatedTasks,
+      stats 
+    }, () => {
       this.filterTasks();
     });
   },
 
   filterTasks() {
     const { currentTab, searchKeyword, allTasks } = this.data;
+    const now = Date.now();
+    
+    // 第一步：过滤任务
     const filtered = allTasks.filter(task => {
-      const tabMatch = currentTab === 'all' || 
+      const tabMatch = 
+        currentTab === 'all' || 
         (currentTab === 'todo' && task.status !== '完成') ||
-        (currentTab === 'done' && task.status === '完成');
-      
-      const searchMatch = task.title.includes(searchKeyword) || 
+        (currentTab === 'done' && task.status === '完成') ||
+        (currentTab === 'overdue' && task.isOverdue);
+  
+      const searchMatch = 
+        task.title.includes(searchKeyword) || 
         (task.description && task.description.includes(searchKeyword));
       
       return tabMatch && searchMatch;
     });
-
-    this.setData({ filteredTasks: filtered });
+  
+    // 第二步：分组排序
+    const futureTasks = [];  // 未过期任务
+    const pastTasks = [];    // 已过期任务
+  
+    filtered.forEach(task => {
+      if (task.dueDateTime >= now) {
+        futureTasks.push(task);
+      } else {
+        pastTasks.push(task);
+      }
+    });
+  
+    // 未过期任务：按截止时间升序（越早越前）
+    futureTasks.sort((a, b) => a.dueDateTime - b.dueDateTime);
+    
+    // 已过期任务：按截止时间降序（越近的越前）
+    pastTasks.sort((a, b) => b.dueDateTime - a.dueDateTime);
+  
+    // 合并结果：未过期在前 + 已过期在后
+    const sortedTasks = [...futureTasks, ...pastTasks];
+  
+    this.setData({ filteredTasks: sortedTasks });
   },
 
   switchTab(e) {
@@ -136,8 +218,38 @@ Page({
     wx.navigateTo({ url: '/pages/add-task/add-task' });
   },
 
-  handleLogout() {
-    app.globalData.userId = '';
-    wx.reLaunch({ url: '/pages/login/login' });
+  // 新增触摸处理方法
+  handleTouchStart(e) {
+    const index = e.currentTarget.dataset.index;
+    this.setData({ activeIndex: index });
+  },
+
+  handleTouchEnd() {
+    this.setData({ activeIndex: -1 });
+  },
+
+  // 新增长按处理
+  handleLongPress(e) {
+    const taskId = e.currentTarget.dataset.id;
+    const _this = this;
+    wx.showModal({
+      title: '删除任务',
+      content: '确定要删除这个任务吗？',
+      success(res) {
+        if (res.confirm) {
+          _this.deleteTask(taskId);
+        }
+      }
+    });
+  },
+
+  async deleteTask(taskId) {
+    try {
+      await api.task.delete(taskId);
+      wx.showToast({ title: '删除成功' });
+      this.loadData();
+    } catch (err) {
+      wx.showToast({ title: '删除失败', icon: 'none' });
+    }
   }
 });

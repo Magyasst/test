@@ -1,16 +1,28 @@
 <!-- pages/login/login.wxml -->
 <view class="login-container">
-  <!-- 隐藏测试入口 -->
-  <view class="test-entry" bindtap="handleQuickEntry"></view>
-
   <view class="login-card">
+    <!-- 头部LOGO和标语 -->
     <view class="card-header">
       <image class="logo" src="/images/任务7.png"></image>
       <text class="title">TaskFlow</text>
       <text class="subtitle">让任务管理更高效</text>
     </view>
 
-    <view class="card-body">
+    <!-- 切换选项卡 -->
+    <view class="tab-bar">
+      <view 
+        class="tab-item {{isLogin ? 'active' : ''}}" 
+        bindtap="switchToLogin"
+      >登录</view>
+      <view 
+        class="tab-item {{!isLogin ? 'active' : ''}}" 
+        bindtap="switchToRegister"
+       style="position: relative; left: 2rpx; top: 0rpx">注册</view>
+    </view>
+
+    <!-- 表单容器 -->
+    <view class="card-body {{errorMessage ? 'error' : ''}}">
+      <!-- 用户ID输入 -->
       <view class="input-group {{errorMessage ? 'error' : ''}}">
         <view class="input-wrapper">
           <input 
@@ -23,21 +35,53 @@
           />
           <view class="underline"></view>
         </view>
-        <text class="error-message">{{errorMessage}}</text>
       </view>
 
-      <view class="remember-me">
-        <checkbox checked="{{rememberMe}}" color="#3B82F6" bindtap="toggleRemember"></checkbox>
-        <text class="remember-text">记住账号</text>
-      </view>
+      <!-- 密码输入 -->
+      <view class="input-group {{errorMessage ? 'error' : ''}}" style="margin-top: 40rpx;">
+  <view class="input-wrapper">
+    <input 
+      class="input"
+      type="password"
+      password
+      placeholder="{{isLogin ? '输入密码' : '设置密码（6-18位字母数字）'}}"
+      placeholder-class="placeholder"
+      value="{{password}}"
+      bindinput="handlePasswordInput"
+      maxlength="18"
+    />
+    <view class="underline"></view>
+  </view>
+</view>
+
+<!-- 确认密码输入框 -->
+<view wx:if="{{!isLogin}}" class="input-group {{errorMessage ? 'error' : ''}}" style="margin-top: 40rpx;">
+  <view class="input-wrapper">
+    <input 
+      class="input"
+      type="password"
+      password
+      placeholder="确认密码"
+      placeholder-class="placeholder"
+      value="{{confirmPassword}}"
+      bindinput="handleConfirmPasswordInput"
+      maxlength="18"
+    />
+    <view class="underline"></view>
+  </view>
+</view>
+
+      <!-- 统一错误提示 -->
+      <text class="error-message">{{errorMessage}}</text>
     </view>
 
+    <!-- 操作按钮 -->
     <view class="card-footer">
       <button 
-        class="login-btn" 
-        bindtap="handleLogin"
+        class="action-btn" 
+        bindtap="{{isLogin ? 'handleLogin' : 'handleRegister'}}"
         hover-class="btn-hover"
-       style="height: 138rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">立即登录</button>
+       style="height: 125rpx; display: block; box-sizing: border-box; left: 0rpx; top: 0rpx">{{isLogin ? '立即登录' : '注册账号'}}</button>
     </view>
   </view>
 </view>

@@ -5,17 +5,6 @@
   justify-content: center;
   align-items: center;
   background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
-  position: relative;
-}
-
-/* 隐藏测试入口 */
-.test-entry {
-  position: absolute;
-  top: 40rpx;
-  right: 40rpx;
-  width: 80rpx;
-  height: 80rpx;
-  opacity: 0.1;
 }
 
 .login-card {
@@ -26,11 +15,13 @@
   padding: 64rpx 48rpx;
   box-shadow: 0 16rpx 48rpx rgba(0,0,0,0.1);
   backdrop-filter: blur(20rpx);
+  transform: translateY(-10%);
 }
 
+/* 头部LOGO样式 */
 .card-header {
   text-align: center;
-  margin-bottom: 72rpx;
+  margin-bottom: 40rpx;
 }
 
 .logo {
@@ -55,8 +46,50 @@
   letter-spacing: 1rpx;
 }
 
+/* 选项卡样式 */
+.tab-bar {
+  display: flex;
+  justify-content: center;
+  margin: 60rpx 0 40rpx;
+  position: relative;
+}
+
+.tab-item {
+  padding: 20rpx 60rpx;
+  font-size: 34rpx;
+  color: #94a3b8;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+}
+
+.tab-item.active {
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.tab-item.active::after {
+  content: '';
+  position: absolute;
+  bottom: -10rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 6rpx;
+  background: #3b82f6;
+  border-radius: 3rpx;
+  animation: tabSlide 0.3s ease-out;
+}
+
+@keyframes tabSlide {
+  from { width: 0% }
+  to { width: 60% }
+}
+
+/* 输入框组样式 */
 .input-group {
-  margin: 60rpx 0;
+  margin: 40rpx 0;
+  position: relative;
 }
 
 .input-wrapper {
@@ -77,8 +110,9 @@
 }
 
 .placeholder {
-  color: #94a3b8;
-  font-size: 32rpx;
+  color: #94a3b8 !important;
+  -webkit-text-security: none !important;
+  font-family: system-ui !important;
 }
 
 .underline {
@@ -96,6 +130,12 @@
   width: 100%;
 }
 
+/* 错误状态 */
+.error .underline {
+  background: #ef4444;
+  width: 100%;
+}
+
 .error-message {
   height: 48rpx;
   margin-top: 24rpx;
@@ -104,37 +144,22 @@
   text-align: center;
   opacity: 0;
   transition: all 0.3s ease;
+  -webkit-text-security: none !important;
+  font-family: system-ui !important;
 }
 
-.error .error-message {
+.card-body.error .error-message {
   opacity: 1;
 }
 
-.remember-me {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 48rpx 0;
-}
-
-.remember-text {
-  color: #64748b;
-  font-size: 28rpx;
-  margin-left: 16rpx;
-}
-
-checkbox {
-  transform: scale(1);
-  margin-right: 12rpx;
-}
-
+/* 操作按钮 */
 .card-footer {
-  margin-top: 64rpx;
+  margin-top: 80rpx;
   display: flex;
   justify-content: center;
 }
 
-.login-btn {
+.action-btn {
   width: 80%;
   height: 100rpx;
   line-height: 100rpx;
@@ -151,8 +176,19 @@ checkbox {
   box-shadow: 0 12rpx 32rpx rgba(59,130,246,0.3);
 }
 
-/* 错误状态 */
-.error .underline {
-  background: #ef4444;
-  width: 100%;
+/* 注册确认密码输入框特殊样式 */
+.input-group[style*="margin-top"] .input {
+  padding-right: 120rpx;
 }
+
+  .title, .input {
+    color: #2e353b;
+  }
+  
+  .subtitle {
+    color: #94a3b8;
+  }
+  
+  .input-group {
+    background: rgb(255, 255, 255);
+  }

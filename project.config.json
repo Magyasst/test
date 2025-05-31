@@ -28,5 +28,6 @@
     "tabIndent": "insertSpaces",
     "tabSize": 2
   },
-  "projectArchitecture": "miniProgram"
+  "projectArchitecture": "miniProgram",
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
 }

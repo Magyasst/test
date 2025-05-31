@@ -2,14 +2,14 @@
 <view class="container">
   <!-- 头部导航 -->
   <view class="header">
-    <view class="action-btn" bindtap="navigateBack">
-      <image src="/images/icon-back.png" class="icon" />
-      <text>返回</text>
+    <view class="action-btn hover-scale" bindtap="navigateBack">
+      <image src="/images/返回.png" class="icon" />
+      <text class="btn-text">返回</text>
     </view>
     <text class="title">编辑任务</text>
-    <view class="action-btn danger" bindtap="handleDelete">
-      <image src="/images/icon-delete.png" class="icon" />
-      <text>删除</text>
+    <view class="action-btn danger hover-scale" bindtap="handleDelete">
+      <image src="/images/删除.png" class="icon" />
+      <text class="btn-text">删除</text>
     </view>
   </view>
 
@@ -20,18 +20,17 @@
     </view>
 
     <!-- 状态卡片 -->
-    <view class="status-card {{form.status === '完成' ? 'done' : ''}}">
+    <view class="status-card {{form.status === '完成' ? 'done' : 'active'}}">
       <view class="status-header">
         <text class="status-text">当前状态：</text>
-        <text class="status-badge">{{form.status}}</text>
+        <view class="status-badge {{form.status === '完成' ? 'done' : ''}}">
+          {{form.status}}
+          <view class="status-dot"></view>
+        </view>
+        <view class="status-switch {{form.status === '完成' ? 'active' : ''}}" bindtap="toggleStatus">
+          <view class="switch-handle"></view>
+        </view>
       </view>
-      <button 
-        class="toggle-btn"
-        bindtap="toggleStatus"
-        hover-class="toggle-btn-hover"
-      >
-        {{form.status === '完成' ? '标记为未完成' : '标记为已完成'}}
-      </button>
     </view>
 
     <!-- 表单内容 -->
@@ -89,13 +88,13 @@
         <view class="time-group">
           <picker mode="date" value="{{form.dueDate}}" bindchange="handleDateChange">
             <view class="time-item {{form.dueDate ? 'selected' : ''}}">
-              <image src="/images/icon-date.png" class="icon" />
+              <image src="/images/日期.png" class="icon" />
               <text class="text">{{form.dueDate || '选择截止日期'}}</text>
             </view>
           </picker>
           <picker mode="time" value="{{form.remindTime}}" bindchange="handleTimeChange">
             <view class="time-item {{form.remindTime ? 'selected' : ''}}">
-              <image src="/images/icon-time.png" class="icon" />
+              <image src="/images/时间.png" class="icon" />
               <text class="text">{{form.remindTime || '设置提醒时间'}}</text>
             </view>
           </picker>
@@ -121,15 +120,9 @@
       <text class="modal-title">确认删除</text>
       <text class="modal-content">删除后无法恢复，确定继续吗？</text>
       <view class="modal-actions">
-        <button class="modal-btn cancel" bindtap="setData({showDeleteConfirm: false})">取消</button>
+        <button class="modal-btn cancel" bindtap="closeDeleteConfirm">取消</button>
         <button class="modal-btn confirm" bindtap="confirmDelete">确认删除</button>
       </view>
     </view>
-  </view>
-
-  <!-- 加载状态 -->
-  <view wx:if="{{loading}}" class="loading-overlay">
-    <image src="/images/loading.gif" class="loading-icon" />
-    <text class="loading-text">加载任务详情中...</text>
   </view>
 </view>

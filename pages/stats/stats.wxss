@@ -170,7 +170,7 @@
 
 .chart-container {
   width: 100%;
-  height: 600rpx;
+  height: 560rpx;
   padding: 0 24rpx;
 }
 
