@@ -119,22 +119,6 @@ CREATE TABLE person (
 6. **🔔 智能提醒系统**：自定义任务提醒时间 ⏰  
 7. **📈 动态图表更新**：数据变更实时刷新可视化图表  
 
-## 🚀 安装与运行
-
-### 后端部署
-```bash
-# 克隆项目
-git clone https://github.com/yourusername/todo-app.git
-
-# 创建数据库
-mysql> CREATE DATABASE wechattest;
-
-# 导入SQL脚本
-mysql -u root -p wechattest < schema.sql
-
-# 启动服务
-mvn spring-boot:run
-```
 
 ### 微信小程序
 1. 微信开发者工具导入项目
